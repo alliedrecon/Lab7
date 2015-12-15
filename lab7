@@ -1,1 +1,534 @@
 
+/****************************************************************
+* Name: William Saffaye and Ed Klein
+* Course: IOOP
+* Section: 07
+* Date: 12/14/15
+****************************************************************
+* ID: Lab# 7
+* The purpose of this lab is to create a card game for two players.  A number between ten and
+* fifty is chosen at random and set as the goal number.  The first player who has five
+* cards or less that either adds up or multiplies to up to the goal number wins.
+****************************************************************
+* Test Suite:
+* **************************************************************
+* Goal number is 40
+*Which value of the ace would you like? Please enter either 1 or 11.
+*1
+*Ace value is 1
+*Player 1, please enter username:
+*Will
+*Player 1 is Will
+*
+*Player 2, please enter username:
+*Ed
+*Player 2 is Ed
+*Will your hand is:
+*Hand is empty
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 6
+*
+*Ed your hand is:
+*Hand is empty
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 10
+*
+*Will your hand is:
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 6,9
+*
+*Ed your hand is:
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 10,5
+*
+*Will your hand is:
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 6,9,5
+*
+*Ed your hand is:
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 10,5,7
+*
+*Will your hand is:
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 6,9,5,j
+*
+*Ed your hand is:
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 10,5,7,2
+*
+*Will your hand is:
+*If you would like to pick up a card, enter 0. Else, if you would like to drop a card enter 1.
+*Else enter any other number to skip your turn
+*0
+*Your hand is 6,9,5,j,9
+*You Won
+* 
+* 
+******************************************************************
+*/
+
+package lab7;
+
+import Deck.Deck;
+import Player.Player;
+import Hand.Hand;
+import java.util.Random;
+
+public class GameDriver {
+	public static int goal;
+	//used public methods throughout all classes so that each class can call upon a method
+	//in another class if need be
+	
+	public static void main(String[] args){
+		goalNumber(goal);
+		
+		Hand hand = new Hand();
+		hand.print();
+		
+		Player player = new Player();
+		player.print();
+		
+		Deck gamedeck = new Deck();
+		gamedeck.print();
+		
+	}
+	
+	public static int goalNumber(int goal){
+		Random rand = new Random();
+		goal = rand.nextInt(50) + 10;
+		System.out.println("Goal number is " + goal);
+		return goal;
+	}
+}
+
+
+
+package Hand;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+import Deck.Deck;
+public class Hand {
+
+	public int card1;
+	public int card2;
+	public int card3;
+	public int card4;
+	public int card5;
+	public int[] hand1 = {card1, card2, card3, card4, card5};
+	public int[] hand2 = {card1, card2, card3, card4, card5};
+	private boolean emptyhand;
+	private boolean emptyhand2;
+	private boolean fullhand1;
+	private boolean fullhand2;
+	public boolean win;
+	public ArrayList<int[]> deck_list;
+	public int card;
+	public int[] deck;
+	public int index;
+	public static int goal;
+
+	public Hand(){
+		
+	}
+	
+	public void Hands(){
+//		int card1 = 0;
+//		int card2 = 0;
+//		int card3 = 0;
+//		int card4 = 0;
+//		int card5 = 0;
+		
+		int[] hand1 = {card1, card2, card3, card4, card5};
+		int[] hand2 = {card1, card2, card3, card4, card5};
+		aceValue();
+	}
+
+	public void displayHand(boolean emptyhand){
+		addCard();
+		dropCard();
+	}
+	
+	public boolean isEmpty(){
+		emptyhand = false;
+		emptyhand2 = false;
+		if((hand1 == null) && (hand2 == null)){
+			return true;
+		} else if(hand1 == null){
+			emptyhand = true;
+			return emptyhand;
+		} else if(hand2 == null){
+			emptyhand2 = true;
+			return emptyhand2;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isFull(){
+		fullhand1 = false;
+		fullhand2 = false;
+		int x = 5;
+		if((hand1.length == x) && (hand2.length == x)){
+			return true;
+		} else if(hand1.length == x){
+			fullhand1 = true;
+			return fullhand1;
+		} else if(hand2.length == x){
+			fullhand2 = true;
+			return fullhand2;
+		} else {
+			return false;
+		}
+	}
+	
+	public void addCard(){
+		Deck drawCard = new Deck();
+		drawCard.drawCard();
+		if(card1 == 0){
+			card1 = drawCard.drawCard();
+			System.out.println("Your hand is " + card1);
+		}else{
+			if(card2 == 0 && card1 != 0){
+			}
+		}
+	}
+
+	public void dropCard(){
+		Deck insertCard = new Deck();
+		Scanner s = new Scanner(System.in);
+		int response = s.nextInt();
+		if(response == 0){
+			insertCard.insertCard();
+			
+		}else{
+			if(response == 1){
+				
+			}
+		}
+	}
+	
+	public boolean sumAndProduct(){
+		boolean win = false;
+		if(card1+card2+card3+card4==goal){
+			System.out.println("You won");
+			return win = true;
+		} else if(card1*card2*card3*card4*card5==goal){
+			System.out.println("You won");
+			return win = true;
+		}else{
+			return win = false;
+		}
+	}
+	
+	public static int containsCard(){
+		
+		return -1;
+	}
+	
+	public static int aceValue(){
+		int a;
+		Scanner s = new Scanner (System.in);
+		System.out.println("Which value of the ace would you like?"
+				+ " Please enter either 1 or 11.");
+		a = s.nextInt();
+		if((a == 1) || (a == 11)){
+			System.out.println("Ace value is " + a);
+		}else{
+			if((a != 1) || (a != 11)){
+				System.out.println("That is not a valid value of a");
+			}
+		}
+		return a;
+	}
+	public void print(){
+		
+	}
+}
+
+
+
+package Deck;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class Deck {
+	
+	public int[] deck;
+	public int[] scrap_deck;
+	public int[] remove_card;
+	public int j;
+	public int q;
+	public int k;
+	public int a;
+	boolean empty;
+	public ArrayList<int[]> deck_list;
+	public ArrayList<int[]> scrap_deck_list;
+	public int card;
+	public int cardsUsed;
+	public int card1;
+	public int card2;
+	public int card3;
+	public int card4;
+	public int card5;
+	
+	public Deck(){
+		int j = 10;
+		int q = 10;
+		int k = 10;
+		int[] deck = {2,2,2,2,
+				      3,3,3,3,
+				      4,4,4,4,
+				      5,5,5,5,
+				      6,6,6,6,
+				      7,7,7,7,
+				      8,8,8,8,
+				      9,9,9,9,
+				      10,10,10,10,
+				      j,j,j,j,
+				      q,q,q,q,
+				      k,k,k,k,
+				      a,a,a,a,};
+		shuffleArray(deck);
+//		ArrayList<int[]> deck_list = new ArrayList<>(Arrays.asList(deck));
+	}
+	
+	public void insertCard(){
+		ArrayList<int[]> scrap_deck_list = new ArrayList<>();
+		System.out.println("Enter the number you would like to discard");
+		Scanner s = new Scanner(System.in);
+		for(int rc = s.nextInt(); rc > 0; rc--){
+			int[] remove_card = new int[rc];
+			scrap_deck_list.add(remove_card);
+			System.out.println("You discarded " + remove_card);
+		}
+	}
+	
+	public int drawCard(){
+		ArrayList<int[]> deck_list = new ArrayList<>(Arrays.asList(deck));
+		Random generator = new Random();
+        int index = generator.nextInt(deck_list.size());
+        deck_list.remove(index);
+        return index;
+        
+        
+//		System.out.println(deck);
+//		int index = 0;
+//		for(int i = 52; i < deck_list.size(); i--){
+//			if(i > 0){
+//				card = deck_list.get(index);
+//				deck_list.remove(index);
+//				//add card to player's hand
+//			}else{
+//				if(i <= 0){
+//					isEmpty(deck_list);
+//					swapDecks(deck_list, scrap_deck_list);
+//				}
+//			}
+//		}
+	}
+	
+	public boolean isEmpty(ArrayList<int[]> deck_list){
+		for(int i = deck_list.size(); i > 0;){
+			if(i > 0){
+				empty = false;
+			}else{
+				if(i <= 0){
+					empty = true;
+				}
+			}
+		}
+		return empty;
+	}
+	
+	public void swapDecks(ArrayList<int[]> deck_list, 
+			ArrayList<int[]> scrap_deck_list){
+		int i = 0;
+		do{
+				deck_list = scrap_deck_list;
+			
+		}while(i == deck_list.size());
+	}
+	
+	private void shuffleArray(int[] deck) {
+		Random rnd = ThreadLocalRandom.current();
+//		for (int i = deck.length-1; i > 0; i--){
+//			int index = rnd.nextInt(i+1);
+//			int a = deck[index];
+//			deck[index] = deck[i];
+//			deck[i] = a;
+		
+		for (int i = deck.length-1; i > 0; i--){
+			int index = (int)(Math.random()*(i+1));
+			int temp = deck[i];
+			deck[i] = deck[index];
+			deck[index] = temp;
+			
+			cardsUsed = 0;
+		}
+	}
+	
+	public void print(){
+	}
+}
+
+
+
+package Player;
+
+import java.util.Scanner;
+
+import Hand.Hand;
+import Deck.Deck;
+
+public class Player {
+	public static String name1;
+	public static String name2;
+	public int hand1[];
+	public int hand2[];
+	public int card;
+	public int card1;
+	public int card2;
+	public int card3;
+	public int card4;
+	public int card5;
+	
+	public Player(){
+		Hand Hand = new Hand();
+		Hand.Hands();
+		int card1 = 0;
+		int card2 = 0;
+		int card3 = 0;
+		int card4 = 0;
+		int card5 = 0;
+		
+		int[] hand1 = {card1,card2,card3,card4,card5};
+		int[] hand2 = {card1,card2,card3,card4,card5};
+	}
+	
+	public Player(String name1, String name2){
+	}
+	
+	public boolean takeTurn(){
+		player1(name1, hand1);
+		player2(name2, hand2);
+		return false;
+		//switches between player's turn
+	}
+	
+	public void player1(String name1, int[] hand1){
+		System.out.println(name1 + " your hand is:");
+		if(hand1 == null){
+			System.out.println("Hand is empty");
+		}else{
+			displayHandPlayer1(hand1);
+		}
+		pickUpOrDrop();
+		completeTurn();
+		//displays player 1's information
+	}
+	
+	public void player2(String name2, int[] hand2){
+		System.out.println(name2 + " your hand is:");
+		if(hand2 == null){
+			System.out.println("Hand is empty");
+		}else{
+			displayHandPlayer2(hand2);
+		}
+		pickUpOrDrop();
+		completeTurn();
+		//displays player 2's information
+	}
+	
+	private void displayHandPlayer1(int[] hand1){
+		Hand isFull = new Hand();
+		Hand isEmpty = new Hand();
+		isFull.isFull();
+		isEmpty.isEmpty();
+		System.out.println(hand1);
+		System.out.println();
+		
+	}
+	
+	private void displayHandPlayer2(int[] hand2){
+		Hand isFull = new Hand();
+		Hand isEmpty = new Hand();
+		isFull.isFull();
+		isEmpty.isEmpty();
+		System.out.println(hand2);
+		System.out.println();
+	}
+	
+	public void getName(String name1, String name2) {
+		Scanner s = new Scanner(System.in);
+		System.out.println("Player 1, please enter username:");
+		name1 = s.next();
+		System.out.println("Player 1 is " + name1);
+		
+		
+		
+		System.out.println();
+		System.out.println("Player 2, please enter username:");
+		name2 = s.next();
+		System.out.println("Player 2 is " + name2);
+		//gets the name for both players
+	}
+	
+	public void pickUpOrDrop(){
+		Scanner s = new Scanner(System.in);
+		System.out.println("If you would like to pick up a card, enter 0."
+				+ " Else, if you would like to drop a card enter 1."
+				+ " Else enter any other number to skip your turn");
+		int response = s.nextInt();
+		if(response == 0){
+			pickup();
+		}else{
+			if(response == 1){
+				drop();
+			}
+		}
+		//prompts the player if they would like to pick up a card or drop a card 
+	}
+	
+	private void pickup(){
+		Hand pickup = new Hand();
+		pickup.addCard();
+	}
+	
+	private int drop(){
+		Deck drop = new Deck();
+		drop.insertCard();
+		return 0;
+	}
+	
+	public void completeTurn(){
+		Hand sumAndProduct = new Hand();
+		sumAndProduct.sumAndProduct();
+		
+	}
+	public void print(){
+		getName(name1, name2);
+		takeTurn();
+	}
+}
